@@ -3,7 +3,8 @@
 
 class Triangle {
 private:
-    float x1, y1, x2, y2, x3, y3; // Toa do 3 diem cua tam giac
+    // Toa do 3 diem cua tam giac
+    float x1, y1, x2, y2, x3, y3; 
 
 public:
     Triangle(); // Constructor mac dinh
