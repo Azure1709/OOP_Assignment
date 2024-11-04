@@ -1,7 +1,7 @@
 #ifndef NGAYTHANGNAM_H
 #define NGAYTHANGNAM_H
 
-#include <iostream>
+#include <bits/stdc++.h>
 
 class NgayThangNam {
 private:
@@ -9,23 +9,54 @@ private:
     int iThang;
     int iNam;
 
+
+    bool isLeapYear(int year) const;
+
+
+    int getDaysInMonth(int month, int year) const;
+
+
+    bool isValidDate(int ngay, int thang, int nam) const;
+
 public:
+
     NgayThangNam();
-    NgayThangNam(int nam, int thang, int ngay);
-    int TinhNgay();
-    NgayThangNam operator+(int ngay);
-    NgayThangNam operator-(int ngay);
-    int operator-(NgayThangNam a);
-    NgayThangNam operator++();
-    NgayThangNam operator--();
-    bool operator == (NgayThangNam a);
-    bool operator != (NgayThangNam a);
-    bool operator >= (NgayThangNam a);
-    bool operator <= (NgayThangNam a);
-    bool operator > (NgayThangNam a);
-    bool operator < (NgayThangNam a);
-    friend std::istream& operator>>(std::istream& in, NgayThangNam& date);
-    friend std::ostream& operator<<(std::ostream& out, const NgayThangNam& date);
+
+    NgayThangNam(int Nam, int Thang, int Ngay);
+
+    int TinhNgay() const;
+
+    void TinhLaiNgay(int soNgay);
+
+    NgayThangNam operator+(int ngay) const;
+
+    NgayThangNam operator-(int ngay) const;
+
+    int operator-(const NgayThangNam& other) const;
+
+    NgayThangNam& operator++();  
+    NgayThangNam operator++(int); 
+
+
+    NgayThangNam& operator--();  
+    NgayThangNam operator--(int); 
+
+
+    bool operator==(const NgayThangNam& other) const;
+
+    bool operator!=(const NgayThangNam& other) const;
+
+    bool operator>=(const NgayThangNam& other) const;
+
+    bool operator<=(const NgayThangNam& other) const;
+
+    bool operator>(const NgayThangNam& other) const;
+
+    bool operator<(const NgayThangNam& other) const;
+
+    friend std::istream& operator>>(std::istream& is, NgayThangNam& date);
+
+    friend std::ostream& operator<<(std::ostream& os, const NgayThangNam& date);
 };
 
-#endif // NGAYTHANGNAM_H
+#endif

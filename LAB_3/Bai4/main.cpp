@@ -1,43 +1,26 @@
-#include <iostream>
+#include <bits/stdc++.h>
 #include "NgayThangNam.h"
 
 int main() {
-    NgayThangNam date1, date2;
+    NgayThangNam ngay1, ngay2;
 
-    std::cout << "Nhap ngay, thang, nam cho date1 (ngay/thang/nam): ";
-    std::cin >> date1; 
-    std::cout << "Nhap ngay, thang, nam cho date2 (ngay/thang/nam): ";
-    std::cin >> date2; 
+    std::cout << "Nhap ngay thang nam date1:" << '\n';
+    std::cin >> ngay1;
+    std::cout << "Nhap ngay thang nam date2:" << '\n';
+    std::cin >> ngay2;
 
-    std::cout << "Date1: " << date1 << std::endl; 
-    std::cout << "Date2: " << date2 << std::endl; 
-    
-    // So sánh hai ngày
-    if (date1 == date2) {
-        std::cout << "Hai ngay bang nhau." << std::endl;
-    } else if (date1 > date2) {
-        std::cout << "Date1 lon hon date2." << std::endl;
-    } else {
-        std::cout << "Date1 nho hon date2." << std::endl;
-    }
+    std::cout << "Ngay thu nhat: " << ngay1 << '\n';
+    std::cout << "Ngay thu hai: " << ngay2 << '\n';
 
-    // Cong ngay
-    int addDays;
-    std::cout << "Nhap so ngay de cong cho date1: ";
-    std::cin >> addDays;
-    NgayThangNam date3 = date1 + addDays;
-    std::cout << "Date1 + " << addDays << ": " << date3 << std::endl;
 
-    // Tru ngay
-    int subDays;
-    std::cout << "Nhap so ngay de tru cho date1: ";
-    std::cin >> subDays;
-    NgayThangNam date4 = date1 - subDays;
-    std::cout << "Date1 - " << subDays << ": " << date4 << std::endl;
+    NgayThangNam ketQuaCong = ngay1 + 15;
+    std::cout << "Ngay thu nhat sau khi cong 15 ngay: " << ketQuaCong << '\n';
 
-    // Tinh so ngay giua hai ngay
-    int daysBetween = date1 - date2;
-    std::cout << "So ngay giua date1 va date2: " << daysBetween << std::endl;
+    NgayThangNam ketQuaTru = ngay2 - 20;
+    std::cout << "Ngay thu hai sau khi tru 20 ngay: " << ketQuaTru << '\n';
 
-    return 0;
+    int khoangCach = abs(ngay1 - ngay2);
+    std::cout << "Khoang cach giua hai ngay la: " << khoangCach << " ngay" << '\n';
+
+    exit(0);
 }

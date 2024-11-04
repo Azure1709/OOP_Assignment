@@ -1,114 +1,114 @@
 #include "NgayThangNam.h"
 
-// Khoi tao mac dinh
-NgayThangNam::NgayThangNam() : iNam(0), iThang(1), iNgay(1) {}
 
-// Khoi tao co tham so
-NgayThangNam::NgayThangNam(int nam, int thang, int ngay) : iNam(nam), iThang(thang), iNgay(ngay) {}
+NgayThangNam::NgayThangNam() : iNgay(1), iThang(1), iNam(0) {}
 
-// Tinh tong so ngay
-int NgayThangNam::TinhNgay() {
-    int days = 0; // Bien dem so ngay
-    for (int m = 1; m < iThang; m++) { // Duyet qua cac thang
-        if (m == 2) { // Thang 2
-            days += (iNam % 4 == 0 && (iNam % 100 != 0 || iNam % 400 == 0)) ? 29 : 28; // Thang 2 co 28 hoac 29 ngay
-        } else if (m == 4 || m == 6 || m == 9 || m == 11) { // Thang co 30 ngay
-            days += 30;
-        } else { // Thang co 31 ngay
-            days += 31;
-        }
+
+NgayThangNam::NgayThangNam(int Nam, int Thang, int Ngay) : iNgay(Ngay), iThang(Thang), iNam(Nam) {}
+
+
+bool NgayThangNam::isLeapYear(int year) const {
+    return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+}
+
+
+int NgayThangNam::getDaysInMonth(int month, int year) const {
+    switch (month) {
+        case 4: case 6: case 9: case 11: return 30;
+        case 2: return isLeapYear(year) ? 29 : 28;
+        default: return 31;
     }
-    days += iNgay; // Cong them so ngay
-    return days; // Tra ve tong so ngay
 }
 
-// Phuong thuc toan tu +
-NgayThangNam NgayThangNam::operator+(int ngay) {
-    NgayThangNam temp = *this; // Tao bien tam
-    temp.iNgay += ngay; // Cong so ngay
-
-    // Dieu chinh cho so ngay trong thang
-    while (temp.iNgay > 30) { // Chua xu ly chinh xac so ngay trong thang
-        temp.iNgay -= 30;
-        temp.iThang++;
-        if (temp.iThang > 12) {
-            temp.iThang = 1; // Qua thang 12 thi tang nam
-            temp.iNam++;
-        }
-    }
-    return temp; // Tra ve ket qua
+int NgayThangNam::TinhNgay() const {
+    int totalDays = iNgay;
+    for (int y = 0; y < iNam; ++y) totalDays += isLeapYear(y) ? 366 : 365;
+    for (int m = 1; m < iThang; ++m) totalDays += getDaysInMonth(m, iNam);
+    return totalDays;
 }
 
-// Phuong thuc toan tu -
-NgayThangNam NgayThangNam::operator-(int ngay) {
-    NgayThangNam temp = *this; // Tao bien tam
-    temp.iNgay -= ngay; // Tru so ngay
-
-    // Dieu chinh cho so ngay trong thang
-    while (temp.iNgay <= 0) {
-        temp.iNgay += 30; // Chua xu ly chinh xac so ngay trong thang
-        temp.iThang--;
-        if (temp.iThang < 1) {
-            temp.iThang = 12; // Truot thang 1 thi giam nam
-            temp.iNam--;
-        }
-    }
-    return temp; // Tra ve ket qua
+void NgayThangNam::TinhLaiNgay(int soNgay) {
+    iNam = 0;
+    while (soNgay >= (isLeapYear(iNam) ? 366 : 365)) soNgay -= isLeapYear(iNam++) ? 366 : 365;
+    iThang = 1;
+    while (soNgay >= getDaysInMonth(iThang, iNam)) soNgay -= getDaysInMonth(iThang++, iNam);
+    iNgay = soNgay + 1;
 }
 
-// Phuong thuc toan tu -
-int NgayThangNam::operator - (NgayThangNam a) {
-    return this->TinhNgay() - a.TinhNgay(); // Tinh so ngay giua hai ngay
+
+NgayThangNam NgayThangNam::operator+(int ngay) const {
+    NgayThangNam result = *this;
+    result.TinhLaiNgay(TinhNgay() + ngay);
+    return result;
 }
 
-// Phuong thuc toan tu ++
-NgayThangNam NgayThangNam::operator ++() {
-    return *this + 1; // Giai phap cho toan tu ++
+
+NgayThangNam NgayThangNam::operator-(int ngay) const {
+    NgayThangNam result = *this;
+    result.TinhLaiNgay(TinhNgay() - ngay);
+    return result;
 }
 
-// Phuong thuc toan tu --
-NgayThangNam NgayThangNam::operator --() {
-    return *this - 1; // Giai phap cho toan tu --
+
+int NgayThangNam::operator-(const NgayThangNam& other) const {
+    return TinhNgay() - other.TinhNgay();
 }
 
-// Phuong thuc toan tu ==
-bool NgayThangNam::operator == (NgayThangNam a) {
-    return (iNam == a.iNam && iThang == a.iThang && iNgay == a.iNgay); // So sanh hai ngay
+
+NgayThangNam& NgayThangNam::operator++() {
+    *this = *this + 1;
+    return *this;
 }
 
-// Phuong thuc toan tu !=
-bool NgayThangNam::operator != (NgayThangNam a) {
-    return !(*this == a); // Tra ve phan nguoc
+NgayThangNam NgayThangNam::operator++(int) {
+    NgayThangNam temp = *this;
+    ++(*this);
+    return temp;
 }
 
-// Phuong thuc toan tu >=
-bool NgayThangNam::operator >= (NgayThangNam a) {
-    return TinhNgay() >= a.TinhNgay(); // So sanh
+
+NgayThangNam& NgayThangNam::operator--() {
+    *this = *this - 1;
+    return *this;
 }
 
-// Phuong thuc toan tu <=
-bool NgayThangNam::operator <= (NgayThangNam a) {
-    return TinhNgay() <= a.TinhNgay(); // So sanh
+
+NgayThangNam NgayThangNam::operator--(int) {
+    NgayThangNam temp = *this;
+    --(*this);
+    return temp;
 }
 
-// Phuong thuc toan tu >
-bool NgayThangNam::operator > (NgayThangNam a) {
-    return TinhNgay() > a.TinhNgay(); // So sanh
+
+bool NgayThangNam::operator==(const NgayThangNam& other) const {
+    return iNgay == other.iNgay && iThang == other.iThang && iNam == other.iNam;
 }
 
-// Phuong thuc toan tu <
-bool NgayThangNam::operator < (NgayThangNam a) {
-    return TinhNgay() < a.TinhNgay(); // So sanh
+bool NgayThangNam::operator!=(const NgayThangNam& other) const {
+    return !(*this == other);
 }
 
-// Ham friend nhap
-std::istream& operator >> (std::istream& in, NgayThangNam& date) {
-    in >> date.iNam >> date.iThang >> date.iNgay; // Nhap nam, thang, ngay
-    return in; // Tra ve
+
+bool NgayThangNam::operator>=(const NgayThangNam& other) const { return TinhNgay() >= other.TinhNgay(); }
+
+bool NgayThangNam::operator<=(const NgayThangNam& other) const { return TinhNgay() <= other.TinhNgay(); }
+
+bool NgayThangNam::operator>(const NgayThangNam& other) const { return TinhNgay() > other.TinhNgay(); }
+
+bool NgayThangNam::operator<(const NgayThangNam& other) const { return TinhNgay() < other.TinhNgay(); }
+
+
+std::istream& operator>>(std::istream& is, NgayThangNam& date) {
+    std::cout << "Nhap ngay: "; 
+    is >> date.iNgay;
+    std::cout << "Nhap thang: "; 
+    is >> date.iThang;
+    std::cout << "Nhap nam: "; 
+    is >> date.iNam;
+    return is;
 }
 
-// Ham friend xuat
-std::ostream& operator << (std::ostream& out, const NgayThangNam& date) {
-    out << date.iNgay << "/" << date.iThang << "/" << date.iNam; // Xuat ngay/thang/nam
-    return out; // Tra ve
+std::ostream& operator<<(std::ostream& os, const NgayThangNam& date) {
+    os << date.iNgay << "/" << date.iThang << "/" << date.iNam;
+    return os;
 }
