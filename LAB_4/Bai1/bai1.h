@@ -1,6 +1,9 @@
 #ifndef BAI1_H
 #define BAI1_H
 
+#include <iostream>
+#include <iomanip>
+#define ll long long
 #include <string>
 using namespace std;
 
@@ -8,10 +11,10 @@ class NhanVien {
 protected:
     string maSo;
     string ten;
-    double luongCoBan;
+    ll luongCoBan;
 
 public:
-    NhanVien(const string &ms, const string &t, double lcb) 
+    NhanVien(const string &ms, const string &t, ll lcb) 
             : maSo(ms), ten(t), luongCoBan(lcb) {}
     virtual double TienThuong() const = 0; 
     virtual void Xuat() const; 
@@ -22,7 +25,7 @@ private:
     double tyLeThuong;
 
 public:
-    QuanLy(const string &ms, const string &t, double lcb, double tlt)
+    QuanLy(const string &ms, const string &t, ll lcb, double tlt)
         : NhanVien(ms, t, lcb), tyLeThuong(tlt) {}
 
     double TienThuong() const override {
@@ -37,7 +40,7 @@ private:
     int soGioLamThem;
 
 public:
-    KySu(const string &ms, const string &t, double lcb, int sglm)
+    KySu(const string &ms, const string &t, ll lcb, int sglm)
         : NhanVien(ms, t, lcb), soGioLamThem(sglm) {}
 
     double TienThuong() const override {
